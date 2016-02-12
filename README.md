@@ -73,6 +73,7 @@ public class Concord {
         }
     }
 
+
     /**
      * @param args the command line arguments
      * @throws java.io.FileNotFoundException
@@ -89,6 +90,7 @@ public class Concord {
         concordance.start(filenm);
     }
     
+    
     /**
      * Prepare a concordance for the given file.
      * @param fileName
@@ -101,6 +103,7 @@ public class Concord {
         Collections.sort(wordList); //sort the words by frequency
         outputWords();
     }
+    
     
     public void inputWords(String fileName) throws FileNotFoundException
     {
