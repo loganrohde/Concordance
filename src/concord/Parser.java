@@ -1,6 +1,7 @@
 package concord;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 /*
  * Toss in your author tags as you update classes. Gracias. --W
  * @author Will Forrest
@@ -11,7 +12,7 @@ public class Parser {
 	//query created concordances
 	
 	
-	rotected ArrayList<Word> wordList;
+	protected ArrayList<Word> wordList;
 
     /**
      * Prepare a concordance for the given file.
@@ -19,7 +20,7 @@ public class Parser {
      * @param fileName
      * @throws java.io.FileNotFoundException
      */
-    Concordance(String fileName) throws FileNotFoundException {
+    public void Parser(String fileName) throws FileNotFoundException {
         wordList = new ArrayList<>();
         System.out.println("created arrayList");
 
