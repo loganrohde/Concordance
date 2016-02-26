@@ -10,16 +10,9 @@ public class Parser {
 	//create the concordance
 	//query created concordances
 	
-	
-	rotected ArrayList<Word> wordList;
+	public ArrayList<Word> wordList;
 
-    /**
-     * Prepare a concordance for the given file.
-     *
-     * @param fileName
-     * @throws java.io.FileNotFoundException
-     */
-    Concordance(String fileName) throws FileNotFoundException {
+    Parser(String fileName) throws FileNotFoundException {
         wordList = new ArrayList<>();
         System.out.println("created arrayList");
 
@@ -28,34 +21,34 @@ public class Parser {
         //outputWords();
     }
 
-    //Concordance(String filenm) {
-    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    //}
     public void inputWords(String fileName) throws FileNotFoundException {
         Scanner in = new Scanner(new File(fileName));
-        System.out.println("starting to input words");
         //uses other punctuation to start a new word
         in.useDelimiter("[\\s\"_;.,:!?()-]");
-        int lineNumber = 0;
-        System.out.println(lineNumber);
 
-        //while (in.hasNext("\n")) {
+        int lineNumber = 0;
+        String tempWord;
+
+        while (in.hasNextLine()) {
             ++lineNumber;
-            System.out.println(lineNumber);
-            
-            while (in.hasNext()) {
-                Word word = new Word(in.next().toLowerCase());
-                System.out.println(word);
+            tempWord = in.nextLine();
+            Scanner in2 = new Scanner(tempWord);
+            in2.useDelimiter("[\\s\"_;.,:!?()-]");
+            while (in2.hasNext()) {
+                Word word = new Word(in2.next().toLowerCase());
+                
                 int index = wordList.indexOf(word);
                 if (index == -1) {
                     wordList.add(word);
                     word.addLine(lineNumber);
                 } else {
                     wordList.get(index).increment();
-                    word.addLine(lineNumber);
+                    wordList.get(index).addLine(lineNumber);
                 }
             }
-        //}
+
+        }
+
     }
 
     /**
@@ -63,7 +56,48 @@ public class Parser {
      */
     public void outputWords() {
         for (int i = 0; i < wordList.size(); i++) {
-            System.out.println(wordList.get(i));
+            if(wordList.get(i).toString().equals("")){
+                
+            }
+            else{
+            System.out.println("\"" + wordList.get(i) + "\" appears " 
+                    + wordList.get(i).getFrequency() + " times");
+            }
         }
+    }
+    
+    public void outputLineNumbers(){
+        for(int i = 0; i < wordList.size(); i++){
+            if(wordList.get(i).toString().equals("")){
+                
+            }
+            else{
+            System.out.print("\"" + wordList.get(i));
+            System.out.print("\" appears on lines ");
+            wordList.get(i).getLines();
+            System.out.println("");
+            }
+        }
+    }
+    
+    public int getWordCount(String newWord){
+        newWord = newWord.toLowerCase();
+        for(int i = 0; i < wordList.size(); i++){
+            if(newWord.compareTo(wordList.get(i).toString()) == 0){
+                return wordList.get(i).getFrequency();
+            }
+           
+        }
+        return 0;
+    }
+    
+    public void getLines(String newWord){
+        newWord = newWord.toLowerCase();
+        for(int i = 0; i < wordList.size(); i++){
+            if(newWord.compareTo(wordList.get(i).toString()) == 0){
+                wordList.get(i).getLines();
+            }
+        }
+        
     }
 }
