@@ -8,7 +8,19 @@ import java.util.*;
  */
 public class TextRepoOp {
 
-	//handle raw data files
-	//    maybe pull over the functionality of web interaction?
-	//    manage a list of available text files
+	public static String showTitles(){
+		String titleList = "This would show titles";
+		return titleList;
+	}
+	
+	public static String showTitlesKeyword(String keyword){
+		keyword = keyword.trim();
+		String titleList = "This would show titles with '" + keyword + "' in it";
+		return titleList;
+	}
+	
+	public static String showTitlesAuthor(String author){
+		String titleList = "This would show titles by '" + author + "'";
+		return titleList;
+	}
 }
