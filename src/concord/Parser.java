@@ -12,6 +12,7 @@ public class Parser {
 	//query created concordances
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 	protected ArrayList<Word> wordList;
 
@@ -22,6 +23,11 @@ public class Parser {
      * @throws java.io.FileNotFoundException
      */
     public void Parser(String fileName) throws FileNotFoundException {
+=======
+	public ArrayList<Word> wordList;
+
+    Parser(String fileName) throws FileNotFoundException {
+>>>>>>> origin/master
 =======
 	public ArrayList<Word> wordList;
 
