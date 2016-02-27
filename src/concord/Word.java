@@ -1,9 +1,11 @@
 package concord;
+
+import java.util.ArrayList;
 /*
  * Toss in your author tags as you update classes. Gracias. --W
  * @author Will Forrest
  */
-public class Word{
+public class Word implements Comparable{
 
 	//Hold data as array nodes for each word node
 	//    +word
