@@ -10,32 +10,18 @@ public class Parser {
 
 	//create the concordance
 	//query created concordances
-	
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
-	protected ArrayList<Word> wordList;
 
+	protected ArrayList<Word> wordList;
+	public ArrayList<Word> wordlist;
     /**
      * Prepare a concordance for the given file.
      *
      * @param fileName
      * @throws java.io.FileNotFoundException
      */
-    public void Parser(String fileName) throws FileNotFoundException {
-=======
-	public ArrayList<Word> wordList;
-
-    Parser(String fileName) throws FileNotFoundException {
->>>>>>> origin/master
-=======
-	public ArrayList<Word> wordList;
-
-    Parser(String fileName) throws FileNotFoundException {
->>>>>>> origin/master
-        wordList = new ArrayList<>();
+    public void Parser(String fileName) throws FileNotFoundException {    	
+    	wordList = new ArrayList<Word>();
         System.out.println("created arrayList");
-
         inputWords(fileName);
         Collections.sort(wordList); //sort the words by frequency
         //outputWords();
@@ -118,6 +104,17 @@ public class Parser {
                 wordList.get(i).getLines();
             }
         }
-        
+    }
+    
+    public void parseToFile(File fileDest){
+    	System.out.println("are we touching this?");
+    	for(int i = 0; i < this.wordList.size(); i++){
+    		Word curr = wordList.get(i);
+    		System.out.println(curr);
+    	}
+    }
+    
+    public void fileToParse(File fileDest, File fileToParse){
+    	
     }
 }
