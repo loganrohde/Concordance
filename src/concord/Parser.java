@@ -11,22 +11,46 @@ public class Parser {
 	//create the concordance
 	//query created concordances
 
+	protected ArrayList<Word> wordList;
 	public ArrayList<Word> wordlist;
 	public int lineNumber = 0;
-	public String fileName = "";	
+	String fileName = "";
     /**
      * Prepare a concordance for the given file.
      *
      * @param fileName
      * @throws java.io.FileNotFoundException
      */
-    public void Parser(String fileName) throws FileNotFoundException {    	
+    public Parser(String fileName) throws FileNotFoundException {    	
     	this.fileName = fileName;
     	wordList = new ArrayList<Word>();
         System.out.println("created arrayList");
         inputWords(fileName);
         Collections.sort(wordList); //sort the words by frequency
         //outputWords();
+    }
+    
+    public Parser(String concPath, boolean isFile) throws FileNotFoundException{
+    	wordList = new ArrayList<Word>();
+    	
+    	File concFile = new File(concPath);
+    	Scanner cfs = new Scanner(concFile);
+    	
+    	while(cfs.hasNextLine()){
+    		String twWord = cfs.next();
+    		int twFreq = cfs.nextInt();
+    		ArrayList<Integer> twLines = new ArrayList<>();
+    		Scanner lineScan = new Scanner(cfs.nextLine());
+    		int i = 0;
+    		while(lineScan.hasNext()){
+    			twLines.add(i, lineScan.nextInt());
+    		}
+    		lineScan.close();
+    		Word tempWord = new Word(twWord, twFreq, twLines);
+    		wordList.add(tempWord);
+    	}
+    	cfs.close();
+    	Collections.sort(wordList);
     }
 
     public void inputWords(String fileName) throws FileNotFoundException {
@@ -48,7 +72,7 @@ public class Parser {
                 break bookStart;
             }
         }
-	parse:
+        parse:
         while (in.hasNextLine()) {
             ++lineNumber;
             tempWord = in.nextLine();
@@ -70,7 +94,7 @@ public class Parser {
                     wordList.get(index).addLine(lineNumber);
                 }
             }
-
+            in2.close();
         }
 
     }
@@ -186,12 +210,15 @@ public class Parser {
 
         if (firstOccurrenceCount < 1) {
             //System.out.println(targetPhrase + " does not appear in the text");
-            return false;
+            strngScan.close();
+        	return false;
         } else if (secondOccurrenceCount < 1) {
             //System.out.println(targetPhrase + " does not appear in the text");
-            return false;
+        	strngScan.close();
+        	return false;
         } else if (thirdOccurrenceCount < 1) {
             //System.out.println(targetPhrase + " does not appear in the text");
+        	strngScan.close();
             return false;
         }
 
@@ -232,19 +259,19 @@ public class Parser {
                         if (adjCount == 0) {
                             if (compareWord.compareTo(firstWord) == 0) {
                                 adjCount += 1;
-                                System.out.println(adjCount);
+                                //System.out.println(adjCount);
                             }
                         } else if (adjCount == 1) {
                             if (compareWord.compareTo(secondWord) == 0) {
                                 adjCount += 1;
-                                System.out.println(adjCount);
+                                //System.out.println(adjCount);
                             } else {
                                 adjCount = 0;
                             }
                         } else if (adjCount == 2) {
                             if (compareWord.compareTo(thirdWord) == 0) {
                                 adjCount += 1;
-                                System.out.println(adjCount);
+                               // System.out.println(adjCount);
                             } else {
                                 adjCount = 0;
                             }
@@ -253,12 +280,12 @@ public class Parser {
                         if (adjCount == 0) {
                             if (compareWord.compareTo(firstWord) == 0) {
                                 adjCount += 1;
-                                System.out.println(adjCount);
+                                //System.out.println(adjCount);
                             }
                         } else if (adjCount == 1) {
                             if (compareWord.compareTo(secondWord) == 0) {
                                 adjCount += 1;
-                                System.out.println(adjCount);
+                               // System.out.println(adjCount);
                             } else {
                                 adjCount = 0;
                             }
@@ -268,12 +295,15 @@ public class Parser {
                 }
 
             }
-
+            in2.close();
         }
-
+        System.out.println(adjCount + " " + wordCount);
         if (adjCount == wordCount) {
             System.out.println(targetPhrase + " does appear in the text");
             return true;
+        }
+        else{
+        	System.out.println(targetPhrase + " does not appear in the text.");
         }
         return false;
     }
@@ -296,7 +326,7 @@ public class Parser {
     
      */
     public boolean wordOccurrence(String baseWord, String targetWord,
-            int baseWordLine, int lineRange) {
+        int baseWordLine, int lineRange) {
         baseWord = baseWord.toLowerCase();
         targetWord = targetWord.toLowerCase();
         int minLine = baseWordLine - lineRange;
@@ -305,7 +335,7 @@ public class Parser {
         int targetOccurrenceCount = 0;
         int baseWordIndex = -1;
         int targetWordIndex = -1;
-        //checks if the given word occurs in the text
+       //checks if the given word occurs in the text
         for (int i = 0; i < wordList.size(); i++) {
             String word = wordList.get(i).getWord();
             if (baseWord.compareTo(word) == 0) {
@@ -334,7 +364,7 @@ public class Parser {
                 targetWordIndex = i;
                 targetOccurrenceCount += 1;
             }
-        }
+       }
 
         if (targetOccurrenceCount < 1) {
             System.out.println(targetWord + " does not occur in the text.");
@@ -356,21 +386,21 @@ public class Parser {
         }
 
         if (maxLine > lineNumber) {
-            maxLine = lineNumber;
-        }
+           maxLine = lineNumber;
+       }
         if (minLine < 0) {
             minLine = 0;
         }
         //checks if the target word can be found in the specified line range
         //of the base word
         int num = 0;
-        for (int i = minLine; i <= maxLine; i++) {
+       for (int i = minLine; i <= maxLine; i++) {
             if (wordList.get(targetWordIndex).occursOnLine(i) == false) {
                 num += 1;
             } else {
                 System.out.println(targetWord + " does occur within plus or "
                         + "minus " + lineRange + " lines of " + baseWord);
-                return true;
+               return true;
 
             }
         }
@@ -383,15 +413,21 @@ public class Parser {
         return false;
     }
     
-    public void parseToFile(File fileDest){
-    	System.out.println("are we touching this?");
+    public void parseToFile(File fileDest) throws IOException{
+    	PrintWriter concWrite = new PrintWriter(new BufferedWriter(new FileWriter(fileDest)));    	
+    	System.out.println("Writing Concordance to Disk");
+    	
     	for(int i = 0; i < this.wordList.size(); i++){
+    		
     		Word curr = wordList.get(i);
-    		System.out.println(curr);
+    		if(curr.toString().equals("")){
+    			
+    		}else{
+    			String concLine = curr.getWord() + " " + curr.getFrequency() + " " + curr.getPrintableLines();
+    			concWrite.println(concLine);
+    		}
     	}
+    	concWrite.close();
     }
     
-    public void fileToParse(File fileDest, File fileToParse){
-    	
-    }
 }
