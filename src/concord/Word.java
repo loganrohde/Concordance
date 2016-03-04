@@ -76,6 +76,15 @@ public class Word implements Comparable{
     public String getWord() {
         return word;
     }
+    
+    public boolean occursOnLine(int line) {
+        for (int i = 0; i < lines.size(); i++) {
+            if (line == lines.get(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * increment the frequence of the word by one
