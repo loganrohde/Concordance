@@ -25,7 +25,7 @@ public class TextRepoOp {
 	
 	public static String showTitlesKeyword(File dir, String keyword){
 		keyword = keyword.trim();
-		String titleList = "Locally Stored Titled With Keyword '" + keyword + "':";
+		String titleList = "Locally Stored Titles Filtered By Keyword '" + keyword + "':";
 		String title = "";
 		File[] dirContents = dir.listFiles();
 		int i = 0;
