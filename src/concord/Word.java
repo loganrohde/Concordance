@@ -1,6 +1,6 @@
 package concord;
 
-import java.util.ArrayList;
+import java.util.*;
 /*
  * Toss in your author tags as you update classes. Gracias. --W
  * @author Will Forrest
@@ -25,6 +25,18 @@ public class Word implements Comparable{
         lines = new ArrayList<>();
         this.word = word;
         this.frequency = 1;
+    }
+    
+    
+    //Had to add a new constructor for words to enable writing from conc file to conc parse
+    public Word(String word, int frequency, ArrayList lines){
+		this.word = word;
+		this.frequency = frequency;
+		this.lines = lines;
+	}
+    
+    public void setFreq(int freq){
+    	this.frequency = freq;
     }
 
     /**
@@ -72,6 +84,20 @@ public class Word implements Comparable{
         }
         System.out.print("}\n");
     }
+    
+    //Added in to get a String return from a getLines() style
+    public String getPrintableLines(){
+    	String lineList = "";
+    	for(int i = 0; i < lines.size(); i++){
+    		if(i < lines.size() - 1){
+    			lineList += (lines.get(i) + " ");
+    		}else{
+    			lineList += lines.get(i);
+    		}
+    	}
+    
+    	return lineList;
+    }
 
     public String getWord() {
         return word;
@@ -85,6 +111,7 @@ public class Word implements Comparable{
         }
         return false;
     }
+
 
     /**
      * increment the frequence of the word by one
