@@ -13,7 +13,7 @@ public class Parser {
 
 	public ArrayList<Word> wordlist;
 	public int lineNumber = 0;
-	String fileName = "";
+	public String fileName = "";	
     /**
      * Prepare a concordance for the given file.
      *
