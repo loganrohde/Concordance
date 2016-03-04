@@ -12,8 +12,9 @@ public class ConcordRepoOp {
 	 * Create a concordance from a textfile
 	 * @param textPath
 	 * @return
+	 * @throws FileNotFoundException 
 	 */
-	public static Parser createConcord(String textPath, String usrDir){
+	public static Parser createConcord(String textPath, String usrDir) throws FileNotFoundException{
 		//Generate an Array of files in the user's Texts Repos
 		File[] dir = new File(usrDir).listFiles();
 		boolean caseSensExists = false;	//need a case sensitive match for *NIX-based OS -- Windows doesn't care
@@ -33,14 +34,13 @@ public class ConcordRepoOp {
 			return null;
 		}
 		//We have valid Texts to parse
-		Parser conParse = new Parser();
-		try{
+		Parser conParse = new Parser(textPath);
+		/*try{
 			conParse.Parser(textPath);
-		}catch(FileNotFoundException fnfe){		
+		}catch(FileNotFoundException fnfe){	
 			return null;
-		}
+		}*/
 
-		conParse.outputWords();
 		return conParse;
 	}
 	
@@ -57,6 +57,7 @@ public class ConcordRepoOp {
 				try{
 					concFile.createNewFile();
 					concParse.parseToFile(concFile);
+					return "Concordance Created";
 						
 				}catch(IOException ioerr){
 					System.out.println("Error -- Error Creating Concordance File: " + concPath);
@@ -64,30 +65,50 @@ public class ConcordRepoOp {
 				}
 		}
 		
-		System.out.println("The concfile exists and it is named: ");
+		System.out.println("The concfile exists and it is named: " + concFile.getAbsolutePath());
 		if(concFile.exists()){
 			try{
-				FileWriter concWrite = new FileWriter(concFile);
-				System.out.println("We're writing to " + concFile.getAbsolutePath());
-				//concWrite(concParse.parseToFile(concFile));
+				concParse.parseToFile(concFile);
 			}catch(IOException ioerr){
 				System.out.println("hit an error writing file");
 				return "WHOOPS2";
 			}
 		}
-		//concParse.parseToFile(concFile);
 	
-		return "Heyo, let's implement some save functionality. K?";
+		return "Concordance Created";
 	}
 	
-	public static String showConcords(){
-		return "Guess what this should do. If you guess show the gen'd concords, you win.";
+	public static String showConcords(File dir){
+		String concList = "Locally Stored Concordances:";
+		String conc = "";
+		File[] dirContents = dir.listFiles();
+		int i = 0;
+		while(i < dirContents.length){
+			conc = dirContents[i].toString();
+			conc = conc.substring(conc.lastIndexOf('\\') + 1, conc.indexOf('.'));
+			concList = concList + "\n" + conc;
+			i++;
+		}
+		return concList;
 	}
 	
-	public static String showConcordsKeyword(String keyword){
-		return "Show the Concords filtered by a keyword.";
+	public static String showConcordsKeyword(File dir, String keyword){
+		keyword = keyword.trim();
+		String concList = "Locally Stored Concordance Filtered By Keyword '" + keyword + ":";
+		String conc = "";
+		File[] dirContents = dir.listFiles();
+		int i = 0;
+		while(i < dirContents.length){
+			conc = dirContents[i].toString();
+			conc = conc.substring(conc.lastIndexOf('\\') + 1, conc.lastIndexOf('.'));
+			if(conc.contains(keyword)){
+				concList = concList + "\n" + conc;
+			}
+			i++;
+		}
+		return concList;
 	}
-	
+
 	public static String showConcordsAppearance(){
 		return "Show the concords with the word appearing, and what not.";
 	}
