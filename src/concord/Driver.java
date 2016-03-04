@@ -9,7 +9,7 @@ import java.io.*;
 public class Driver {
 	
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws FileNotFoundException{
 				
 		//Start off by declaring environmental variables
 		String usrHomDir = System.getProperty("user.home");	//home dir for Concordance folder to be placed in
@@ -50,6 +50,12 @@ public class Driver {
 		
 		//Environment variables specified, directories -- move onto user interaction, after intro
 		intro();
+		
+//		System.out.println("Current conc path is " + curConcPath);
+//		curConcParse = new Parser("C:\\Users\\will\\Concordance\\Concordances\\test2.conc", true);
+//		System.out.println("Current conc path is now " + curConcPath);
+//		curConcParse.outputWords();
+		
 		Scanner userInScn = new Scanner(System.in);	//Scanner to handle all user input
 		while(userInScn.hasNext()){
 			String userCmd = userInScn.nextLine();
@@ -57,11 +63,13 @@ public class Driver {
 			//Show the 'commands' menu
 			if(userCmd.equals("commands")){
 				commandMenu();
+				continue;	//shortcircuit, reeval loop
 			}
-			
+
 			//Show the 'help' menu
 			if(userCmd.equals("help")){
 				helpMenu();
+				continue;	//shortcircuit, reeval loop
 			}
 			
 			//Quit the process
@@ -73,25 +81,31 @@ public class Driver {
 			//Show Titles in the Texts Repo
 			if(userCmd.equals("show titles")){
 				System.out.println(TextRepoOp.showTitles(textDir));
+				continue;	//shortcircuit, reeval loop
 			}
 			
 			//Show Concordances in the Concordances Repo
 			if(userCmd.equals("show concordances")){
-				ConcordRepoOp.showConcords();
+				System.out.println(ConcordRepoOp.showConcords(concDir));
+				continue;	//shortcircuit, reeval loop
 			}
 			
 			//Show Currently Loaded Concordance
 			if(userCmd.equals("show concordance current")){
+				System.out.println(curConcParse);
 				if(!curConcPath.equals("")){
 					System.out.println(curConcPath);
-				}else System.out.println("No Concordance is currently loaded.");
+					continue;
+				}else{
+					System.out.println("No Concordance is currently loaded.");
+					continue;
+				}
 			}
 			
 			//Save Currently Loaded Concordance
 			if(userCmd.equals("save concordance")){
-				System.out.println(userCmd);
-				System.out.println(curConcPath);
 				System.out.println(ConcordRepoOp.saveConcord(curConcParse, curConcPath));
+				continue;
 			}
 
 			
@@ -109,13 +123,15 @@ public class Driver {
 				//if the beginning of user command matches the system command...
 				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
 					//...strip anything after the match, and pass it as an argument to function
-					if(userCmd.length() > sysCmdLen) System.out.println(TextRepoOp.showTitlesKeyword(textDir, userCmd.substring(sysCmdLen)));
+					if(userCmd.length() > sysCmdLen){
+						System.out.println(TextRepoOp.showTitlesKeyword(textDir, userCmd.substring(sysCmdLen)));
+						continue;
+					}
 				}
 			}
 			catch(StringIndexOutOfBoundsException strIOB){
 				continue;
 			}
-			
 			//Show titles of texts filtered by author name
 			//'show titles author <name>'
 			try{
@@ -124,10 +140,14 @@ public class Driver {
 				//if the beginning of user command matches the system command...
 				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
 					//...strip anything after the match, and pass it as an argument to function
-					if(userCmd.length() > sysCmdLen) System.out.println(TextRepoOp.showTitlesAuthor(userCmd.substring(sysCmdLen)));
+					if(userCmd.length() > sysCmdLen){
+						System.out.println(TextRepoOp.showTitlesAuthor(userCmd.substring(sysCmdLen)));
+						continue;
+					}
 				}
 			}
 			catch(StringIndexOutOfBoundsException strIOB){
+				System.out.println("BROKE IN SHOW TITLES AUTHOR");
 				continue;
 			}
 			
@@ -149,50 +169,200 @@ public class Driver {
 							curConcPath = concPath;
 							curTextPath = textPath;
 							System.out.println("UPDATE Loaded Concordance: " + userCmd.substring(sysCmdLen));
+							continue;
 						}
 					}
 				}
 			}
 			catch(StringIndexOutOfBoundsException strIOB){
+				System.out.println("BROKE IT IN CREATE CONCORDANCE");
 				continue;
 			}
+			
+			//Show titles of concordances filtered by a keyword
+			//'show concordances keyword <keyword>'
+//			try{
+//				String sysCmd = "show concordances keyword ";
+//				int sysCmdLen = sysCmd.length();
+//				//if the beginning of user command matches the system command
+//				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
+//					//...strip anything after the match, and pass it as an argument to function
+//					if(userCmd.length() > sysCmdLen) System.out.println(ConcordRepoOp.showConcordsKeyword(userCmd.substring(sysCmdLen)));
+//				}
+//			}
+//			catch(StringIndexOutOfBoundsException strIOB){
+//				System.out.println("BROKE IN SHOW CONCORDANCES KEYWORD");
+//				continue;
+//			}
+			
+			//Show titles of concordances containing at least N appearances of a keyword
+			//'show concordances appearance <int N> <keyword>'
+//			try{
+//				String sysCmd = "show concordances appearance ";
+//				int sysCmdLen = sysCmd.length();
+//				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
+//					if(userCmd.length() > sysCmdLen){
+//						String vars = userCmd.substring(sysCmdLen);
+//						String varKey = "";
+//						int varApr = -1;
+//						if(vars.charAt(0) == '"'){
+//							varKey = vars.substring(0, vars.lastIndexOf('"'));
+//						}else varKey = vars.substring(0, 1); //need to fix this shit
+//						System.out.println(ConcordRepoOp.showConcordsAppearance());
+//					}
+//				}
+//			}
+//			catch(StringIndexOutOfBoundsException strIOB){
+//				continue;
+//			}
+			
 			
 			//Show titles of concordances filtered by a keyword
 			//'show concordances keyword <keyword>'
 			try{
 				String sysCmd = "show concordances keyword ";
 				int sysCmdLen = sysCmd.length();
-				//if the beginning of user command matches the system command
+				//if the beginning of user command matches the system command...
 				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
 					//...strip anything after the match, and pass it as an argument to function
-					if(userCmd.length() > sysCmdLen) System.out.println(ConcordRepoOp.showConcordsKeyword(userCmd.substring(sysCmdLen)));
+					if(userCmd.length() > sysCmdLen){
+						System.out.println(ConcordRepoOp.showConcordsKeyword(concDir, userCmd.substring(sysCmdLen)));
+						continue;
+					}
 				}
+			}catch(StringIndexOutOfBoundsException strIOB){
+				continue;
+			}
+			
+			//Load a specified concordance from the Concordances Repo
+			//'load concordance <title>'
+			try{
+				String sysCmd = "load concordance ";
+				int sysCmdLen = sysCmd.length();
+				String tempUserCmd = userCmd.substring(0, sysCmdLen);
+				//System.out.println("the userer command is " + tempUserCmd);
+				if(tempUserCmd.equals(sysCmd)){
+					if(userCmd.length() > sysCmdLen){
+						String concPath = usrConcDir + usrSlash + userCmd.substring(sysCmdLen).trim() + ".conc";
+						String textPath = usrTextDir + usrSlash + userCmd.substring(sysCmdLen).trim() + ".txt";
+						File existsConc = new File(concPath);
+						boolean isFile = (existsConc.exists());
+						try{
+							curConcParse = new Parser(concPath, isFile);
+						}catch(FileNotFoundException fne){
+							System.out.println("Concordance not found.");
+							continue;
+						}
+						curConcPath = concPath;
+						curTextPath = textPath;
+						System.out.println("UPDATE Loaded Concordance: " + userCmd.substring(sysCmdLen).trim());
+						continue;
+					}
+				}
+				//System.out.println("We got a system command");
 			}
 			catch(StringIndexOutOfBoundsException strIOB){
 				continue;
 			}
-			
-			//Show titles of concordances containing at least N appearances of a keyword
-			//'show concordances appearance <int N> <keyword>'
+	
+			//Query a loaded concordance for line occurences of a word
+			//'query concordance lines <keyword>'
 			try{
-				String sysCmd = "show concordances appearance ";
+				String sysCmd = "query concordance lines ";
 				int sysCmdLen = sysCmd.length();
 				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
 					if(userCmd.length() > sysCmdLen){
-						String vars = userCmd.substring(sysCmdLen);
-						String varKey = "";
-						int varApr = -1;
-						if(vars.charAt(0) == '"'){
-							varKey = vars.substring(0, vars.lastIndexOf('"'));
-						}else varKey = vars.substring(0, 1); //need to fix this shit
-						System.out.println(ConcordRepoOp.showConcordsAppearance());
+						String usrKeyword = userCmd.substring(sysCmdLen);
+						curConcParse.getLines(usrKeyword);
+						continue;
 					}
 				}
 			}
 			catch(StringIndexOutOfBoundsException strIOB){
 				continue;
 			}
+			catch(NullPointerException npe){
+				System.out.println("No concordance currently loaded. Please specificy a concordance, then retry.");
+				continue;
+			}
 			
+			//Query a loaded concordance for the frequency of a word
+			//frequency calculations use word.getWordCount()
+			//'query concordance frequency <keyword>'
+			try{
+				String sysCmd = "query concordance frequency ";
+				int sysCmdLen = sysCmd.length();
+				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
+					if(userCmd.length() > sysCmdLen){
+						String usrKeyword = userCmd.substring(sysCmdLen);
+						int numOc = curConcParse.getWordCount(usrKeyword);
+						System.out.println("The keyword '" + usrKeyword + "' occurs " + numOc + " times.");
+						continue;
+					}
+				}
+			}
+			catch(StringIndexOutOfBoundsException strIOB){
+				continue;
+			}
+			catch(NullPointerException npe){
+				System.out.println("No concordance currently loaded. Please specificy a concordance, then retry.");
+				continue;
+			}
+			
+			// Query the loaded concordance for a phrase of 2-3 words
+			// phrase calculations use Parser.adjacent()
+			// 'query concordance phrase <phrase>'
+			try{
+				String sysCmd = "query concordance phrase ";
+				int sysCmdLen = sysCmd.length();
+				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
+					if(userCmd.length() > sysCmdLen){
+						String usrPhrase = userCmd.substring(sysCmdLen).trim();
+						curConcParse = new Parser(curTextPath);
+						System.out.println(curTextPath);
+						boolean bool = curConcParse.adjacency(usrPhrase);
+						System.out.println(bool);
+						continue;
+					}
+				}
+			}
+			catch(StringIndexOutOfBoundsException strIOB){
+				continue;
+			}
+			catch(NullPointerException npe){
+				System.out.println("No concordance currently loaded. Please specificy a concordance, then retry.");
+				continue;
+			}
+			
+			//
+			//'query concordance distance <baseword> <targetword> <line occurence> <distance>'
+			//wordOccurrence(String baseWord, String targetWord, int baseWordLine, int lineRange)
+			try{
+				String sysCmd = "query concordance distance ";
+				int sysCmdLen = sysCmd.length();
+				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
+					if(userCmd.length() > sysCmdLen){
+						String usrKeyword = userCmd.substring(sysCmdLen);
+						Scanner lineScan = new Scanner(usrKeyword);
+						String baseWord = lineScan.next(), targetWord = lineScan.next();
+						int baseWordLine = lineScan.nextInt(), lineRange = lineScan.nextInt();
+						
+						
+						boolean bool = curConcParse.wordOccurrence(baseWord, targetWord, baseWordLine, lineRange);
+						if(!bool){
+							System.out.println(targetWord + " does not occur within plus or minus " + lineRange + " lines of " + baseWord);
+						}
+						continue;
+					}
+				}
+			}
+			catch(StringIndexOutOfBoundsException strIOB){
+				continue;
+			}
+			catch(NullPointerException npe){
+				System.out.println("No concordance currently loaded. Please specificy a concordance, then retry.");
+				continue;
+			}
 		}
 	}
 	
@@ -229,11 +399,15 @@ public class Driver {
 		//Req 7
 		System.out.println("load concordance <title>\n -- Load a specified concordance");
 		//Req 8
-		System.out.println("query concordance <word> lines");
-		System.out.println("query concordance <word> numberlines");
-		System.out.println("query concordance <word> rank");
-		System.out.println("query concordance <word> distance <distance>");
-		System.out.println("query concordance <phrase>");
+		System.out.println("query concordance lines <word>\n -- Query a loaded concordance for line occurences of a word.");
+		System.out.println("query concordance frequency <word>\n -- Query a loaded concordance for the frequency of occurence of a word.");
+		//System.out.println("query concordance <word> rank");
+		System.out.println("query concordance distance <baseword> <targetword> <line occurence> <distance>\n -- Query a concordance to see if a target word occurs within a given distance of an occurence of a base word."
+				+ "\n -- NOTE: <baseword> is the word to be searched from"
+				+ "\n --       <targetword> is the word to be search for"
+				+ "\n --       <line occurence> is the specific occurence of <baseword> to be search from"
+				+ "\n --       <distance> is the maximum distance <targetword> can be from <baseword> in line");
+		System.out.println("query concordance phrase <phrase>\n -- Query a loaded concordance for existence of phrase\n -- NOTE: Phrases must be either two or three words");
 	}
 	
 	public static void helpMenu(){
