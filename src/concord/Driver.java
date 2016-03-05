@@ -5,6 +5,7 @@ import java.io.*;
 /*
  * Toss in your author tags as you update classes. Gracias. --W
  * @author Will Forrest
+ * @author Logan Rohde
  */
 public class Driver {
 	
@@ -50,11 +51,7 @@ public class Driver {
 		
 		//Environment variables specified, directories -- move onto user interaction, after intro
 		intro();
-		
-//		System.out.println("Current conc path is " + curConcPath);
-//		curConcParse = new Parser("C:\\Users\\will\\Concordance\\Concordances\\test2.conc", true);
-//		System.out.println("Current conc path is now " + curConcPath);
-//		curConcParse.outputWords();
+
 		
 		Scanner userInScn = new Scanner(System.in);	//Scanner to handle all user input
 		while(userInScn.hasNext()){
@@ -181,44 +178,6 @@ public class Driver {
 			
 			//Show titles of concordances filtered by a keyword
 			//'show concordances keyword <keyword>'
-//			try{
-//				String sysCmd = "show concordances keyword ";
-//				int sysCmdLen = sysCmd.length();
-//				//if the beginning of user command matches the system command
-//				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
-//					//...strip anything after the match, and pass it as an argument to function
-//					if(userCmd.length() > sysCmdLen) System.out.println(ConcordRepoOp.showConcordsKeyword(userCmd.substring(sysCmdLen)));
-//				}
-//			}
-//			catch(StringIndexOutOfBoundsException strIOB){
-//				System.out.println("BROKE IN SHOW CONCORDANCES KEYWORD");
-//				continue;
-//			}
-			
-			//Show titles of concordances containing at least N appearances of a keyword
-			//'show concordances appearance <int N> <keyword>'
-//			try{
-//				String sysCmd = "show concordances appearance ";
-//				int sysCmdLen = sysCmd.length();
-//				if(userCmd.substring(0, sysCmdLen).equals(sysCmd)){
-//					if(userCmd.length() > sysCmdLen){
-//						String vars = userCmd.substring(sysCmdLen);
-//						String varKey = "";
-//						int varApr = -1;
-//						if(vars.charAt(0) == '"'){
-//							varKey = vars.substring(0, vars.lastIndexOf('"'));
-//						}else varKey = vars.substring(0, 1); //need to fix this shit
-//						System.out.println(ConcordRepoOp.showConcordsAppearance());
-//					}
-//				}
-//			}
-//			catch(StringIndexOutOfBoundsException strIOB){
-//				continue;
-//			}
-			
-			
-			//Show titles of concordances filtered by a keyword
-			//'show concordances keyword <keyword>'
 			try{
 				String sysCmd = "show concordances keyword ";
 				int sysCmdLen = sysCmd.length();
@@ -240,7 +199,6 @@ public class Driver {
 				String sysCmd = "load concordance ";
 				int sysCmdLen = sysCmd.length();
 				String tempUserCmd = userCmd.substring(0, sysCmdLen);
-				//System.out.println("the userer command is " + tempUserCmd);
 				if(tempUserCmd.equals(sysCmd)){
 					if(userCmd.length() > sysCmdLen){
 						String concPath = usrConcDir + usrSlash + userCmd.substring(sysCmdLen).trim() + ".conc";
@@ -259,7 +217,6 @@ public class Driver {
 						continue;
 					}
 				}
-				//System.out.println("We got a system command");
 			}
 			catch(StringIndexOutOfBoundsException strIOB){
 				continue;
@@ -383,7 +340,6 @@ public class Driver {
 	public static void commandMenu(){
 		//Req 2
 		System.out.println("show titles\n -- Display a list of locally stored titles.");
-		System.out.println("show titles author <name>\n -- Display a list of locally stored titles by a specified author.");
 		System.out.println("show titles keyword <keyword>\n -- Display a list of locally stored titles filtered by a specified keyword.");
 		//Req 3
 		System.out.println("create concordance <title>\n -- Create a concordance for an existing title.\n -- NOTE: Concordance is not saved to disk upon creation");
@@ -392,8 +348,6 @@ public class Driver {
 		//Req 5
 		System.out.println("show concordances\n -- Display a list of locally stored concordances.");
 		System.out.println("show concordances keyword <keyword>\n -- Display a list of locally stored concordances whose titles contain a specified keyword.");
-		//Req 6
-		System.out.println("show concordances appearance <appearances> <keyword>\n -- Display a list of locally stored concordances containing at least N instances of a specified keyword\n -- NOTE: N must be a whole number that is greater than 0");
 		//required for determining currently loaded concordance
 		System.out.println("show concordance current\n -- Display the currently loaded concordance");
 		//Req 7
