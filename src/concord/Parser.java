@@ -30,6 +30,7 @@ public class Parser {
         Collections.sort(wordList); //sort the words by frequency
     }
     
+    //parses a file that is a saved concordance
     public Parser(String concPath, boolean isFile) throws FileNotFoundException{
     	wordList = new ArrayList<Word>();
     	
@@ -133,6 +134,7 @@ public class Parser {
         }
     }
     
+    //gets the frequency of the specified word
     public int getWordCount(String newWord){
         newWord = newWord.toLowerCase();
         for(int i = 0; i < wordList.size(); i++){
@@ -144,6 +146,7 @@ public class Parser {
         return 0;
     }
     
+    //gets the lines for the specified word
     public void getLines(String newWord){
         newWord = newWord.toLowerCase();
         for(int i = 0; i < wordList.size(); i++){
@@ -153,6 +156,7 @@ public class Parser {
         }
     }
     
+   //checks to see if a 2 or 3 word phrase occurs in the text
     public boolean adjacency(String targetPhrase) throws FileNotFoundException {
         targetPhrase = targetPhrase.toLowerCase();
         Scanner strngScan = new Scanner(targetPhrase);
