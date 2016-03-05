@@ -52,7 +52,12 @@ public class Parser {
     	cfs.close();
     	Collections.sort(wordList);
     }
-
+    
+	
+	
+    /**
+     * parse the text file and input the words into the array list
+     */
     public void inputWords(String fileName) throws FileNotFoundException {
         Scanner in = new Scanner(new File(fileName));
         //uses other punctuation to start a new word
