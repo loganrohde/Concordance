@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.*;
 /*
  * Toss in your author tags as you update classes. Gracias. --W
+ * @author Logan Rohde
  * @author Will Forrest
  */
 public class Parser {
@@ -27,7 +28,6 @@ public class Parser {
         System.out.println("created arrayList");
         inputWords(fileName);
         Collections.sort(wordList); //sort the words by frequency
-        //outputWords();
     }
     
     public Parser(String concPath, boolean isFile) throws FileNotFoundException{
@@ -153,7 +153,7 @@ public class Parser {
         }
     }
     
-    public boolean adjacency(/*int line, */String targetPhrase) throws FileNotFoundException {
+    public boolean adjacency(String targetPhrase) throws FileNotFoundException {
         targetPhrase = targetPhrase.toLowerCase();
         Scanner strngScan = new Scanner(targetPhrase);
         String tempWord1 = "";
@@ -169,7 +169,7 @@ public class Parser {
         //Parses the phrase
         strngScan.useDelimiter("[\\s\"_;.,:!?()-]");
         while (strngScan.hasNext()) {
-            //++wordCount;
+
             tempWord1 = strngScan.next();
             if (tempWord1.equals("") == false) {
                 ++wordCount;
@@ -214,15 +214,12 @@ public class Parser {
         }
 
         if (firstOccurrenceCount < 1) {
-            //System.out.println(targetPhrase + " does not appear in the text");
             strngScan.close();
         	return false;
         } else if (secondOccurrenceCount < 1) {
-            //System.out.println(targetPhrase + " does not appear in the text");
         	strngScan.close();
         	return false;
         } else if (thirdOccurrenceCount < 1) {
-            //System.out.println(targetPhrase + " does not appear in the text");
         	strngScan.close();
             return false;
         }
@@ -231,7 +228,6 @@ public class Parser {
         //uses other punctuation to start a new word
         in4.useDelimiter("[\\s\"_;.,:!?()-]");
 
-        //int lineNumber = 0;
         int quit = 0;
         String tempWord;
 
@@ -239,7 +235,6 @@ public class Parser {
         while (in4.hasNext()) {
             tempWord = in4.next().toLowerCase();
             if ("***".compareTo(tempWord) == 0) {
-                //System.out.println("true");
                 quit += 1;
             }
             if (quit >= 2) {
@@ -255,28 +250,21 @@ public class Parser {
 
             while (in2.hasNext()) {
                 compareWord = in2.next().toLowerCase();
-                //System.out.println("The current word is: " + compareWord);
-                //System.out.println(compareWord.equals(""));
                 if (compareWord.equals("") == false) {
-                    //System.out.println("we are comparing with word: " + compareWord);
-                    //System.out.println("the string was blank");
                     if (wordCount == 3) {
                         if (adjCount == 0) {
                             if (compareWord.compareTo(firstWord) == 0) {
                                 adjCount += 1;
-                                //System.out.println(adjCount);
                             }
                         } else if (adjCount == 1) {
                             if (compareWord.compareTo(secondWord) == 0) {
                                 adjCount += 1;
-                                //System.out.println(adjCount);
                             } else {
                                 adjCount = 0;
                             }
                         } else if (adjCount == 2) {
                             if (compareWord.compareTo(thirdWord) == 0) {
                                 adjCount += 1;
-                               // System.out.println(adjCount);
                             } else {
                                 adjCount = 0;
                             }
@@ -285,12 +273,10 @@ public class Parser {
                         if (adjCount == 0) {
                             if (compareWord.compareTo(firstWord) == 0) {
                                 adjCount += 1;
-                                //System.out.println(adjCount);
                             }
                         } else if (adjCount == 1) {
                             if (compareWord.compareTo(secondWord) == 0) {
                                 adjCount += 1;
-                               // System.out.println(adjCount);
                             } else {
                                 adjCount = 0;
                             }
@@ -375,15 +361,7 @@ public class Parser {
             System.out.println(targetWord + " does not occur in the text.");
             return false;
         }
-
-        /* checks to see if the base word line given is a valid line number
-         for the overall text
-         should not need this because it already checks if the word is on the
-         given line number. If the given line number is not in the line array of
-         the given word then the method will return false.
-         if(baseWordLine > lineNumber){
-         System.out.println("There are not that many lines in the text");
-         }*/
+        
         //if the line distance is not positive then it will be invalid
         if (lineRange < 0) {
             System.out.println("Your line distance is not valid");
