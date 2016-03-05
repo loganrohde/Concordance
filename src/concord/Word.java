@@ -3,6 +3,7 @@ package concord;
 import java.util.*;
 /*
  * Toss in your author tags as you update classes. Gracias. --W
+ * @author Logan Rohde
  * @author Will Forrest
  */
 public class Word implements Comparable{
@@ -66,10 +67,13 @@ public class Word implements Comparable{
         return word;
     }
 
+
+    //add a line to the words line array list
     public void addLine(int line) {
         lines.add(line);
     }
 
+    //output the lines for the word
     public void getLines() {
         System.out.print("{");
         for(int i = 0; i < lines.size(); i ++)
@@ -99,10 +103,16 @@ public class Word implements Comparable{
     	return lineList;
     }
 
+    /**
+     * @return the word
+     */
     public String getWord() {
         return word;
     }
     
+    /**
+     * Checks to see if a word occurs on the given line
+     */
     public boolean occursOnLine(int line) {
         for (int i = 0; i < lines.size(); i++) {
             if (line == lines.get(i)) {
