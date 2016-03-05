@@ -367,5 +367,6 @@ public class Driver {
 	public static void helpMenu(){
 		System.out.println("Full help functionality forthcoming. For now, input a command.");
 		System.out.println("NOTE: All command and argument syntax is Case-Sensitive");
+		System.out.println("Enter 'quit' to quit the program");
 	}
 }
